@@ -1,20 +1,43 @@
 pipeline {
     agent any
+
+    environment {
+        // Path to your Python executable
+        PYTHON = 'M:\\INC_Agent\\env\\Scripts\\python.exe'
+        // Base directory of your project
+        PROJECT_DIR = 'M:\\ExpensePrediction'
+    }
+
     stages {
         stage('Install Dependencies') {
             steps {
-                bat '"M:\\INC_Agent\\env\\Scripts\\python.exe" -m pip install -r M:\\ExpensePrediction\\requirements.txt'
+                echo "Installing Python dependencies..."
+                bat "\"${env.PYTHON}\" -m pip install -r \"${env.PROJECT_DIR}\\requirements.txt\""
             }
         }
+
         stage('Train Model') {
             steps {
-                bat '"M:\\INC_Agent\\env\\Scripts\\python.exe" M:\\ExpensePrediction\\scripts\\train.py'
+                echo "Training the model..."
+                bat "\"${env.PYTHON}\" \"${env.PROJECT_DIR}\\scripts\\train.py\""
             }
         }
+
         stage('Run Predictions') {
             steps {
-                bat '"M:\\INC_Agent\\env\\Scripts\\python.exe" M:\\ExpensePrediction\\scripts\\predict.py'
+                echo "Running predictions..."
+                bat "\"${env.PYTHON}\" \"${env.PROJECT_DIR}\\scripts\\predict.py\""
             }
         }
     }
+
+    post {
+        success {
+            echo "Pipeline completed successfully!"
+        }
+        failure {
+            echo "Pipeline failed. Check the logs for details."
+        }
+    }
 }
+
