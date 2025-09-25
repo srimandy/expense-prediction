@@ -44,7 +44,7 @@ model = xgb.XGBRegressor(n_estimators=200, learning_rate=0.1, max_depth=4, rando
 model.fit(X_train, y_train)
 
 # Save model
-save_dir = r"M:\ExpensePrediction\scripts"
+save_dir = r"M:\ExpensePrediction\models"
 os.makedirs(save_dir, exist_ok=True)
 
 save_path = os.path.join(save_dir, "xgb_expense_model.pkl")
